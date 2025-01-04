@@ -11,6 +11,7 @@ const url = require("url");
 const { StringDecoder } = require("string_decoder");
 const routes = require("../routes");
 const { notFoundHandler } = require("../handlers/routeHandler/notFounHandler");
+const { parseJSON } = require("./utilities");
 // module scaffolding
 const handler = {};
 
@@ -36,25 +37,22 @@ handler.hendleReqRes = (req, res) => {
   const chosenHandler = routes[trimminedPath]
     ? routes[trimminedPath]
     : notFoundHandler;
-
-  chosenHandler(requestProperties, (statusCode, payload) => {
-    statusCode = typeof statusCode === "number" ? statusCode : 500;
-    payload = typeof payload === "object" ? payload : {};
-
-    const payloadString = JSON.stringify(payload);
-    //return the final response
-    res.writeHead(statusCode);
-    res.end(payloadString);
-  });
-
   req.on("data", (buffer) => {
     realData += decoder.write(buffer);
   });
   req.on("end", () => {
     realData += decoder.end();
-    console.log(realData);
-    // response hendle
-    res.end("Hello Bangladesh I am Fazle");
+    requestProperties.body = parseJSON(realData);
+    chosenHandler(requestProperties, (statusCode, payload) => {
+      statusCode = typeof statusCode === "number" ? statusCode : 500;
+      payload = typeof payload === "object" ? payload : {};
+
+      const payloadString = JSON.stringify(payload);
+      //return the final response
+      res.setHeader("Content-Type", "application/json");
+      res.writeHead(statusCode);
+      res.end(payloadString);
+    });
   });
 };
 
