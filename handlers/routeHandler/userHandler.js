@@ -90,7 +90,13 @@ handler._users.post = (requestProperties, callback) => {
   }
 };
 
+<<<<<<< HEAD
 handler._users.get = (requestProperties, callback) => {};
+=======
+handler._users.get = (requestProperties, callback) => {
+  callback(200, {s})
+};
+>>>>>>> nodejsLap
 handler._users.put = (requestProperties, callback) => {};
 handler._users.delete = (requestProperties, callback) => {};
 
