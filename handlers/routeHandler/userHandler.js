@@ -87,7 +87,7 @@ handler._users.post = (requestProperties, callback) => {
 };
 
 handler._users.get = (requestProperties, callback) => {
-  callback(200, {requestProperties})
+  callback(200, {s})
 };
 handler._users.put = (requestProperties, callback) => {};
 handler._users.delete = (requestProperties, callback) => {};
